@@ -1,0 +1,72 @@
+from flask import Flask,jsonify,request
+from pymongo import MongoClient
+from bson.objectid import ObjectId  # Esto se usa para manejar el _id de MongoDB
+#pip install -r requirements.txt
+#instalar extension python
+#instalar thunder client
+#pip install pymongo
+
+# Conectar a MongoDB Atlas
+client = MongoClient("mongodb+srv://ialfper:<db_password>@alumnos.zoinj.mongodb.net/?retryWrites=true&w=majority&appName=alumnos")
+db = client["despliegue"]  # Reemplaza con el nombre de tu base de datos
+collection = db["usuarios"]  # Nombre de la colección en MongoDB
+app = Flask(__name__)
+
+"""
+lista = [
+    {
+        "id": 1,
+        "nombre": "Juan",
+        "ap1": "Perez",
+        "direccion": "Calle Falsa 123",
+        "dni": "12345678A"
+    },
+    {
+        "id": 2,
+        "nombre": "Ana",
+        "ap1": "Garcia",
+        "direccion": "Avenida Siempreviva 742",
+        "dni": "87654321B"
+    },
+    {
+        "id": 3,
+        "nombre": "Carlos",
+        "ap1": "Lopez",
+        "direccion": "Plaza Mayor 10",
+        "dni": "11223344C"
+    }
+]
+"""
+@app.route('/api/buscar', methods=["GET"])
+def buscar():
+    buscar = request.args.get('buscar', '').lower()  # Obtener el valor de búsqueda y convertir a minúsculas
+    if not buscar:
+        return jsonify({"error": "Falta el parámetro de búsqueda 'buscar'"}), 400
+
+    # Filtrar usuarios donde el valor buscado aparezca en cualquier campo
+    resultados = [user for user in lista if any(buscar in str(valor).lower() for valor in user.values())]
+
+    return jsonify(resultados if resultados else {"message": "No se encontraron coincidencias"})
+
+
+@app.route('/api/nuevo',methods=["POST"])
+def nuevo():
+    nuevoUser=request.get_json()
+    lista.append(nuevoUser)
+    return jsonify(nuevoUser)
+
+
+@app.route('/api/users',methods=["GET"])
+def users():
+    return jsonify(lista)
+
+
+@app.route('/api')
+def home():
+    return 'Hello, World!'
+
+@app.route('/api/about')
+def about():
+    return 'About'
+
+app.run()
