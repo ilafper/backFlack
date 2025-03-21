@@ -1,9 +1,7 @@
 name: Crear y subir imagen Docker
 
 on:
-  push:
-    branches:
-      - main  # Se ejecutará cuando haya un push en la rama "main"
+  workflow_dispatch:
 
 jobs:
   publish_images:
@@ -16,7 +14,7 @@ jobs:
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Construir imagen
-        run: docker build -t ivaniap/ejemplo nuevo:latest .
+        run: docker build -t ivaniap/ejemploapiclientes:latest .
 
       - name: Subir imagen a Docker Hub
-        run: docker push ivaniap/ejemplonuevo:latest
+        run: docker push ivaniap/ejemploapiclientes:latest
