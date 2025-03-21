@@ -1,8 +1,8 @@
 name: Crear y subir imagen docker
 on:
-  workflow_dispatch:
+  [workflow_dispatch]
 
-join:
+jobs:
   publish_images:
     runs_on: ubuntu-latest
     steps:
@@ -12,5 +12,5 @@ join:
         - name: construir imagen
           run: docker buildt -t ivaniap/ejemploApiClientes:latest
 
-        - name: subir imagen a docker ivaniap/ejemploApiClientes:latest
-          run: docker push
+        - name: subir imagen a dockerhub 
+          run: docker push ivaniap/ejemploApiClientes:latest
