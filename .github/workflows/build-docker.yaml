@@ -10,7 +10,7 @@ jobs:
           uses: actions/checkout@v4
 
         - name: construir imagen
-          run: docker buildt -t ivaniap/ejemploApiClientes:latest
+          run: docker buildt -t ivaniap/ejemploApiClientes:latest .
 
         - name: subir imagen a dockerhub 
           run: docker push ivaniap/ejemploApiClientes:latest
